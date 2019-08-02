@@ -3,6 +3,7 @@
 #
 # 
 # 2019 Andreas Czerniak <andreas.czerniak@uni-bielefeld.de>
+# 2019-08-02 ; initial version on github and clean-up
 
 OAPCDATACSV="../openapc-de/data/apc_de.csv"
 MAXLINES=100
@@ -25,9 +26,6 @@ fi
 APCDOIS=`cat ${OAPCDATACSV} | tail -n +$((1 + 1)) | awk -F , '{print $4","$3}' | sed 's/"//g' `
 #APCDOIS=`cat ${OAPCDATACSV} | tail -n +$((1921 + 1)) | awk -F , '{print $4","$3}' | sed 's/"//g' `
 #APCDOIS=`cat ${OAPCDATACSV} | tail -n +$((1 + 1)) | head -n $((10 + 1)) | awk -F , '{print $4","$3}' | sed 's/"//g' `
-# CITATIONDOIS=`cat ${OCDATACSV} | tail -n +$((SKIPLINES + 1)) | head -n $((MAXLINES + 1)) | grep -v creation | awk -F , '{print $2","$3}' | sed 's/"//g' `
-
-#echo $CITATIONDOIS
 
 PID=$$
 OAAPIURL="http://api.openaire.eu/search/publications"
@@ -105,26 +103,6 @@ for i in ${APCDOIS}; do
 #     echo "($PID) $TOID"
   fi
 
-
-#  GETURL="http://api.openaire.eu/search/publications?format=xml&model=openaire&doi=$i"
-#  HTTPRESPONSE=`curl --silent --fail -X GET "$GETURL" -H "accept: */*" `
-#  RES=$?
-##  echo -e "\nReturnResult:  $RES"
-#  TOTAL=` echo $HTTPRESPONSE | xmllint --xpath "//response/header/total/text()" -   ` 
-#  XMLRET=$?
-#  echo -en "."
-##  echo "Answer Total:  $TOTAL"
-#  if [ "$XMLRET" == "0" ] && [ "$TOTAL" != 0 ] ; then
-#     FOUND=$((FOUND + 1))
-#     echo "\n#################################"
-#     echo "CitationDOI:  $i"
-##     echo "     $GETURL"
-#     echo -e "   TitleName: "
-#     echo $HTTPRESPONSE | xmllint --xpath "//title/text()" - 
-#     echo ; echo
-#  fi
-##  sleep 0.5
-##  echo "($PID) $TOID"
 done
 
 echo
@@ -134,9 +112,3 @@ echo "Sum APC: $SUMEUR EUR" | tee -a ${LOGFILE}
 echo "scale=2; $SUMEUR/$FROMFOUND" | bc
 echo "scale=2; $SUMEUR/$FROMFOUND" | bc >> ${LOGFILE}
 echo "  ^^--- EUR per article" | tee -a ${LOGFILE}
-#echo
-#echo -n "founded citing to cited ratio: "
-#echo "scale=2; $FROMFOUND/$FOUND*100" | bc
-#echo -n "citing to cited ratio: "
-#echo "scale=2; $FROMCOUNT/$COUNT*100" | bc
-

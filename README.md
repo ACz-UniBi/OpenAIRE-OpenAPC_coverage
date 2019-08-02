@@ -8,9 +8,25 @@ This project calcualte the dataset coverage from OpenAPC initiative ( https://gi
 # Requirements
 1. **OpenAPC_de dataset** from github repository
  https://github.com/OpenAPC/openapc-de. 
+
 Checkout parallel to this directory: 
 _git clone https://github.com/OpenAPC/openapc-de_
-2. **curl** , for requesting results from OpenAIRE API
+
+2. **curl**, for requesting results from OpenAIRE API
+
+3. **xmllint** and **xmlstarlet**, to handle xml results
+  
+   http://xmlsoft.org/xmllint.html
+
+   http://xmlstar.sourceforge.net/
+
+
+
+# Usage
+
+1. __chmod +x evalDOIonOA.sh__
+2. __./evalDOIonOA.sh__
+
 
 # Releases
 For release notes see https://github.com/ACz-UniBi/OpenAIRE-OpenAPC_coverage/blob/master/RELEASE-NOTES.md
