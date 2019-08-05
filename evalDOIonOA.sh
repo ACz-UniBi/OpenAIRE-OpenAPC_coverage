@@ -1,6 +1,11 @@
 #!/bin/bash
 #
+# evalDOIonOA 
 #
+# is a shell script to calculate the coverage of OpenAPC dataset DOIs with the OpenAIRE.
+# It's check's the OpenAPC DOI on the OpenAIRE API and collect some information
+#
+# If a DOI is checked at OpenAIRE (on the same same date) it skips the request.
 # 
 # 2019 Andreas Czerniak <andreas.czerniak@uni-bielefeld.de>
 # 2019-08-02 ; initial version on github and clean-up
@@ -8,6 +13,8 @@
 OAPCDATACSV="../openapc-de/data/apc_de.csv"
 MAXLINES=100
 SKIPLINES=1
+
+DEBUG=0
 
 ADATE=`date +%Y%m%d` 
 LOGFILE="openAPC2OpenAIRE_${ADATE}.log"
@@ -39,28 +46,30 @@ COUNT=0
 SUMEUR=0
 PROJECTCOUNT=0
 
-echo $APCDOIS
+if [ "$DEBUG" == "1" ] ; then echo $APCDOIS fi
 
 for i in ${APCDOIS}; do
   COUNT=$((COUNT + 1))
   FROMID=`echo $i | awk -F , '{ print $1 }' `
   APCEUR=`echo $i | awk -F , '{ print $2 }' `
 
-  echo $FROMID
+  if [ "$DEBUG" == "1" ] then echo $FROMID fi
   SAVEDOIFILENAME=`echo $FROMID | sed 's#/#_#g' `
   SAVEDOIDIR=`echo $FROMID | awk '{split($0,a,"/"); print a[1]}' `
 
 
   if [ "$FROMID" != "$OLDFROM" ] ; then
-     FROMCOUNT=$((FROMCOUNT + 1))
-#     echo "   =>   $FROMID  !=  $OLDFROM "
+     FROMCOUNT=$((FROMCOUNT + 1))  #
+     if [ "$DEBUG" == "2" ] then echo "   =>   $FROMID  !=  $OLDFROM " fi
      if [ ! -f "data/${ADATE}/${SAVEDOIDIR}/${SAVEDOIFILENAME}.xml" ] ; then
        GETURL="${OAAPIURL}?format=xml&model=openaire&doi=$FROMID"
        echo "    *  $GETURL"
        HTTPRESPONSE=`curl --silent --fail -X GET "$GETURL" -H "accept: */*" `
        RES=$?
-#     echo $HTTPRESPONSE
-#     echo -e "\nReturnResult:  $RES"
+       if [ "$DEBUG" == "3" ] then 
+       	  echo $HTTPRESPONSE
+	  echo -e "\nReturnResult:  $RES"
+       fi
        TOTAL=` echo $HTTPRESPONSE | xmllint --xpath "//response/header/total/text()" -   ` 
 #     TITLE=` echo $HTTPRESPONSE | xmllint --xpath "//results/result/response/header/total/text()" -   ` 
        XMLRET=$?
