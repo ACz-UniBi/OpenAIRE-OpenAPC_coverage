@@ -1,4 +1,5 @@
-# OpenAIRE research graph coverage with the OpenAPC initiative dataset
+# About - OpenAIRE research graph coverage with the OpenAPC initiative dataset
+
 This project calcualte the dataset coverage from OpenAPC initiative ( https://github.com/OpenAPC/openapc-de
 ) with OpenAIRE research graph ( https://www.openaire.eu )
 
@@ -10,7 +11,8 @@ This project calcualte the dataset coverage from OpenAPC initiative ( https://gi
  https://github.com/OpenAPC/openapc-de. 
 
 Checkout parallel to this directory: 
-_git clone https://github.com/OpenAPC/openapc-de_
+
+	$ git clone https://github.com/OpenAPC/openapc-de
 
 2. **curl**, for requesting results from OpenAIRE API
 
@@ -24,8 +26,8 @@ _git clone https://github.com/OpenAPC/openapc-de_
 
 # Usage
 
-1. __chmod +x evalDOIonOA.sh__
-2. __./evalDOIonOA.sh__
+	$ chmod +x evalDOIonOA.sh
+	$ ./evalDOIonOA.sh
 
 
 This shell script calculates the coverage of OpenAPC dataset DOIs with the OpenAIRE.
